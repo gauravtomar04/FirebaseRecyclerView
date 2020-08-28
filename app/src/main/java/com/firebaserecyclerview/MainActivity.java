@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,31 +29,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final TextView textView=findViewById(R.id.text);
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         nameLists = new ArrayList<>();
 
-        DatabaseReference db= FirebaseDatabase.getInstance().getReference("Team");
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference db=FirebaseDatabase.getInstance().getReference("String");
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                       NameList s=dataSnapshot.getValue(NameList.class);
-                       nameLists.add(s);
-                    }
 
-                    adapter = new Adapter(MainActivity.this, nameLists);
-                    recyclerView.setAdapter(adapter);
-                }
+                String data=snapshot.child("ok").getValue(String.class);
+                textView.setText(data);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(),"Wrong",Toast.LENGTH_SHORT).show();
+
             }
         });
+//        DatabaseReference db= FirebaseDatabase.getInstance().getReference("Team");
+//        db.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()){
+//                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+//                       NameList s=dataSnapshot.getValue(NameList.class);
+//                       nameLists.add(s);
+//                    }
+//
+//                    adapter = new Adapter(MainActivity.this, nameLists);
+//                    recyclerView.setAdapter(adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getApplicationContext(),"Wrong",Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }
