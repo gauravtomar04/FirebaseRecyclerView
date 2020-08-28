@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+///STring tata is
                 String data=snapshot.child("ok").getValue(String.class);
                 textView.setText(data);
             }
